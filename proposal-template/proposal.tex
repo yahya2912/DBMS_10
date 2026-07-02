@@ -1,0 +1,124 @@
+% ============================================================
+%  TERM PROJECT – PROPOSAL (template)
+%  Databases · THGA Bochum
+%
+%  How to use:
+%    1. Copy this folder into your own repository.
+%    2. Replace every  <<< ... >>>  placeholder with your content.
+%    3. Build with  `make`  (see the Makefile / README).
+%    4. Send the resulting PDF to the lecturer and wait for approval.
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{thga-db}
+
+% ----- Fill in your metadata -------------------------------
+\renewcommand{\thgaKurs}{Databases}
+\renewcommand{\thgaDatum}{Summer Term 2026}
+\newcommand{\authorName}{<<< Your name >>>}
+\newcommand{\projectTitle}{<<< Working title of your application >>>}
+
+\begin{document}
+\thispagestyle{empty}
+\thgaTitel{Term Project – Proposal}{\projectTitle}
+
+\begin{infobox}
+\textbf{Author:} \authorName \\
+\textbf{Module:} Introduction to Database Management Systems · THGA Bochum \\
+\textbf{Submitted to:} Stephan Bökelmann · \href{mailto:sboekelmann@ep1.rub.de}{sboekelmann@ep1.rub.de} \\
+\textbf{Target size:} 2--4 pages
+\end{infobox}
+
+% ============================================================
+\section{Application domain and motivation}
+% ============================================================
+
+<<< Which application do you build and which problem does it solve? Who uses
+it, and for what? Add one or two concrete usage scenarios. >>>
+
+% ============================================================
+\section{Data model -- ER sketch}
+% ============================================================
+
+<<< Insert your ER sketch (a photographed hand drawing is fine). It must show
+entity types, key attributes, relationships and cardinalities, including at
+least one N:M relationship. >>>
+
+% Example for including an image:
+% \begin{center}
+%   \includegraphics[width=0.9\linewidth]{er-sketch.jpg}
+% \end{center}
+
+% ============================================================
+\section{From model to schema}
+% ============================================================
+
+<<< Derive the relational schema. For each table give the columns, the primary
+key (underlined) and the foreign keys. >>>
+
+\begin{itemize}
+  \item \texttt{<<<table>>>}(\underline{id}, <<<column>>>, \dots)
+  \item \texttt{<<<table>>>}(\underline{id}, \emph{<<<foreign\_key>>>}, \dots)
+\end{itemize}
+
+\textbf{Normalisation.} <<< One or two sentences: why is the schema free of
+redundancy (at least 3NF)? >>>
+
+% ============================================================
+\section{API design}
+% ============================================================
+
+<<< List the planned FastAPI endpoints. Mark where a JOIN / an aggregation
+sits, and which endpoints require the X-API-Key. >>>
+
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\linewidth}{@{}p{2cm}p{4cm}X@{}}
+\toprule
+\textbf{Method} & \textbf{Path} & \textbf{Purpose} \\
+\midrule
+\texttt{GET}  & \texttt{/<<<…>>>} & <<< reads … (JOIN / aggregation) >>> \\
+\texttt{POST} & \texttt{/<<<…>>>} & <<< creates … (requires X-API-Key) >>> \\
+\bottomrule
+\end{tabularx}
+
+% ============================================================
+\section{Frontend idea}
+% ============================================================
+
+<<< What does the frontend look like and which endpoints does it operate?
+Python/tkinter is recommended; if you use something else, say what and why.
+The frontend is delivered as a .deb installer and asks for the API URL and
+X-API-Key in a connection dialog at startup. >>>
+
+% ============================================================
+\section{Operation with Docker Compose}
+% ============================================================
+
+<<< Which services run in your docker-compose.yml (at least postgres and api)?
+Where do the credentials live (.env)? How is the backend deployed on the
+lecture server? >>>
+
+% ============================================================
+\section{Scope, milestones and risks}
+% ============================================================
+
+\textbf{Scope.} <<< How many tables and endpoints? >>>
+
+\textbf{Milestones.}
+\begin{enumerate}[topsep=2pt]
+  \item <<< e.g. schema + seed data ready >>>
+  \item <<< e.g. API reading/writing >>>
+  \item <<< e.g. frontend operates the core endpoints, packaged as .deb >>>
+  \item <<< documentation + video >>>
+\end{enumerate}
+
+\textbf{Risks.} <<< One or two risks that could make the project fail. >>>
+
+\vspace{1em}
+\begin{infobox}
+\textbf{Effort budget:} the whole term project (system, documentation and video)
+should fit into roughly \textbf{40\,h of work} over at most \textbf{2 months}.
+Keep your scope within that budget.
+\end{infobox}
+
+\end{document}

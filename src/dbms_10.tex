@@ -1,337 +1,433 @@
 % ============================================================
-%  DBMS_10 – Projektvorschlag für die Ausarbeitung
-%  THGA Bochum · Datenbanken · Stephan Bökelmann
+%  DBMS_10 – Project Proposal for the Term Project
+%  THGA Bochum · Databases · Stephan Bökelmann
 % ============================================================
 \documentclass[11pt,a4paper]{article}
 
 \usepackage{thga-db}
 
-% ----- Metadaten -------------------------------------------
-\renewcommand{\thgaDatum}{Sommersemester 2026}
+% ----- Metadata --------------------------------------------
+\renewcommand{\thgaKurs}{Databases}
+\renewcommand{\thgaDatum}{Summer Term 2026}
 
 \begin{document}
 \thispagestyle{empty}
-\thgaTitel{Übung 10 – Projektvorschlag}%
-{Ausarbeitung: Ein eigenes datenbankgestütztes System entwerfen}
+\thgaTitel{Exercise 10 – Project Proposal}%
+{Term project: design your own database-backed system}
 
 \begin{infobox}
-\textbf{Modul:} Einführung in Datenbankmanagementsysteme · THGA Bochum \\
-\textbf{Dozent:} Stephan Bökelmann · \href{mailto:sboekelmann@ep1.rub.de}{sboekelmann@ep1.rub.de} \\
+\textbf{Module:} Introduction to Database Management Systems · THGA Bochum \\
+\textbf{Lecturer:} Stephan Bökelmann · \href{mailto:sboekelmann@ep1.rub.de}{sboekelmann@ep1.rub.de} \\
 \textbf{Repository:} \url{https://github.com/MaxClerkwell/DBMS_10} \\
-\textbf{Voraussetzungen:} Vorlesungen 01--10, Übungen DBMS\_01--DBMS\_09 \\
-\textbf{Art der Übung:} Konzeption und schriftliche Abgabe -- \emph{kein} Programmierauftrag \\
-\textbf{Umfang:} 2--4 Seiten Projektvorschlag
+\textbf{Prerequisites:} Lectures 01--10, exercises DBMS\_01--DBMS\_09 \\
+\textbf{Type of exercise:} design and written submission -- \emph{not} a coding assignment \\
+\textbf{Size (proposal):} 2--4 pages \\
+\textbf{Effort (term project):} max.\ 2 months window, approx.\ 40\,h of real work incl.\ documentation and video
 \end{infobox}
 
 \tableofcontents
 \vspace{1em}
 
 % ============================================================
-\section{Worum es in dieser Übung geht}
+\section{What this exercise is about}
 % ============================================================
 
-Diese Übung ist bewusst \textbf{anders aufgebaut} als die bisherigen. Sie
-schreiben diesmal keinen Code und arbeiten keine Schritt-für-Schritt-Anleitung
-ab. Stattdessen \textbf{entwerfen} Sie ein eigenes Projekt und reichen dazu einen
-\textbf{Projektvorschlag} beim Dozenten ein.
+This exercise is deliberately \textbf{structured differently} from the previous
+ones. This time you do not write code and you do not work through a
+step-by-step tutorial. Instead you \textbf{design} your own project and submit a
+\textbf{project proposal} to the lecturer.
 
-Der Projektvorschlag ist die Grundlage Ihrer \textbf{Ausarbeitung} -- der
-Prüfungsleistung, in der Sie über das Semester hinweg ein eigenes,
-datenbankgestütztes System bauen. Bevor Sie mit dem Bau beginnen, klären wir
-gemeinsam den \emph{Gegenstand}: Welche Anwendung wollen Sie umsetzen? Welche
-Daten verwaltet sie? Welche Funktionen bietet sie an?
+The proposal is the basis of your \textbf{term project} -- the graded
+deliverable in which you build your own database-backed system over the course
+of the term. Before you start building, we settle the \emph{subject}: which
+application do you want to implement? Which data does it manage? Which functions
+does it offer?
 
 \begin{infobox}
-\textbf{Ziel dieser Übung:} Reichen Sie einen 2--4-seitigen Projektvorschlag
-ein, aus dem hervorgeht, \emph{welches} datenbankgestützte System Sie in der
-Ausarbeitung bauen wollen und \emph{wie} es die Inhalte der Vorlesungen 01--10
-aufgreift.
+\textbf{Goal of this exercise:} Submit a 2--4-page project proposal that states
+\emph{which} database-backed system you want to build for the term project and
+\emph{how} it draws on the contents of lectures 01--10.
 \end{infobox}
 
-Der Vorschlag wird vom Dozenten \textbf{gegengelesen und freigegeben}. Erst
-nach der Freigabe beginnen Sie mit der Umsetzung. So stellen wir vor dem
-eigentlichen Aufwand sicher, dass Ihr Vorhaben den richtigen Umfang hat --
-weder zu klein noch zu groß -- und alle Pflichtbausteine abdeckt.
+The proposal is \textbf{reviewed and approved} by the lecturer. Only after
+approval do you start the implementation. That way we make sure -- before the
+real effort begins -- that your undertaking has the right size (neither too
+small nor too large) and covers all mandatory building blocks.
 
 % ============================================================
-\section{Die Ausarbeitung im Überblick}
+\section{The term project at a glance}
 % ============================================================
 
-In der Ausarbeitung bauen Sie ein \textbf{vollständiges, datenbankgestütztes
-System für eine Anwendung Ihrer Wahl}. Das Thema ist frei: eine
-Vereinsverwaltung, ein Rezept- und Einkaufsplaner, eine Bibliothek, ein
-Ticketsystem, ein Lager für einen Modellbau-Verein, eine Trainings-App --
-alles ist erlaubt, solange sich sinnvolle Daten und Beziehungen modellieren
-lassen.
+For the term project you build a \textbf{complete, database-backed system for an
+application of your choice}. The topic is free: a club membership manager, a
+recipe and shopping planner, a library, a ticketing system, a warehouse for a
+model-building club, a training app -- anything is allowed as long as
+meaningful data and relationships can be modelled.
 
-Ihre Anwendung soll die Kette abbilden, die wir über das Semester aufgebaut
-haben: \emph{von der Datenmodellierung bis zur laufenden, bedienbaren
-Anwendung.}
+Your application should reflect the chain we have built up over the term:
+\emph{from data modelling to a running, usable application.}
 
-\subsection{Der verbindliche Technologie-Stack}
+\subsection{The mandatory technology stack}
 
-Das System muss aus den folgenden Schichten bestehen. Sie kennen jede Schicht
-bereits aus den Vorlesungen und den vorangegangenen Übungen:
+The system must consist of the following layers. You already know each layer
+from the lectures and the previous exercises:
 
 \begin{itemize}[leftmargin=1.4em]
-  \item \textbf{PostgreSQL} als relationales Datenbankmanagementsystem
-        -- Ihr sauber modelliertes Schema mit Schlüsseln und
-        Integritätsbedingungen (VL 03--07).
-  \item \textbf{FastAPI} als REST-Schicht in Python -- die Datenbank wird
-        \emph{nie} direkt vom Frontend angesprochen, sondern immer über die API
-        (VL 08).
-  \item \textbf{Docker Compose} als Betriebsumgebung -- Datenbank und API
-        laufen als Dienste, die mit \texttt{docker compose up} gemeinsam
-        starten (VL 09).
-  \item \textbf{Ein Frontend}, das die API benutzt. Ein \textbf{Python-Frontend}
-        (z.\,B. tkinter wie in VL 10) ist die empfohlene Variante, weil Sie es
-        bereits kennen. Sie dürfen aber auch ein anderes Frontend bauen
-        (Weboberfläche, Kommandozeilenwerkzeug o.\,Ä.), solange es die API
-        nutzt.
+  \item \textbf{PostgreSQL} as the relational database management system -- your
+        cleanly modelled schema with keys and integrity constraints
+        (L 03--07). Runs as a \textbf{container on the lecture server}.
+  \item \textbf{FastAPI} as the REST layer in Python -- the database is
+        \emph{never} accessed directly by the frontend, always through the API
+        (L 08). The API is protected with an \textbf{\texttt{X-API-Key}}
+        (cf.\ DBMS\_09) and also runs as a \textbf{container on the lecture
+        server}.
+  \item \textbf{Docker Compose} orchestrates \textbf{only the backend} --
+        database and API run as services that start together with
+        \texttt{docker compose up} (L 09). This Compose setup is
+        \textbf{deployed on the lecture server}.
+  \item \textbf{A frontend} that uses the API with the \texttt{X-API-Key}. It is
+        \textbf{not containerised}. Instead you build it into a \textbf{Debian
+        installer (\texttt{.deb})} and install it on the lecture server, so the
+        lecturer can start and test your application there directly (L 10/13). A
+        \textbf{Python frontend} (e.g.\ tkinter as in L 10) is recommended; a
+        different frontend is allowed but must likewise install as a
+        \texttt{.deb}.
 \end{itemize}
 
 \begin{beispielbox}
-\textbf{Die Architektur in einem Satz:}\\[4pt]
+\textbf{The architecture -- everything on the lecture server:}\\[6pt]
 \centerline{%
-  \textbf{Frontend} $\;\longrightarrow\;$ \textbf{FastAPI (REST)}
+  \textbf{Frontend} (installed \texttt{.deb})
+  $\;\xrightarrow{\;\text{HTTP + X-API-Key}\;}\;$
+  \textbf{FastAPI}
   $\;\longrightarrow\;$ \textbf{PostgreSQL}%
-}\\[4pt]
-\centerline{alles orchestriert durch \textbf{Docker Compose}}
+}\\[6pt]
+The \textbf{backend} (API + database) runs in containers via \textbf{Docker
+Compose}. The \textbf{frontend} runs \emph{next to it} as an installed Debian
+package and talks to the API over HTTP using the \texttt{X-API-Key}.
 \end{beispielbox}
 
-\subsection{Was eine sinnvolle Größe ist}
+\subsection{Deployment on the lecture server}
 
-Rechnen Sie mit einem Datenmodell von etwa \textbf{drei bis sechs Tabellen} mit
-mindestens einer \texttt{N:M}-Beziehung, einer Handvoll API-Endpunkte (lesend
-\emph{und} schreibend) und einem Frontend, das die wichtigsten dieser Endpunkte
-bedient. Das ist genug, um alle gelernten Konzepte zu zeigen, und wenig genug,
-um im Semester fertig zu werden.
+The finished system runs on the \textbf{lecture server} so the lecturer can test
+it without any setup of their own:
+
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{Backend:} \texttt{docker compose up -d} starts database and API
+        as containers.
+  \item \textbf{Frontend:} installed as a \texttt{.deb}
+        (\texttt{sudo dpkg -i \dots}) and then launched via the application
+        launcher or \texttt{/usr/bin/\dots}.
+  \item \textbf{Access control:} write calls to the API require the correct
+        \texttt{X-API-Key}; the frontend asks for the API URL and key at startup
+        (connection dialog, L 10).
+\end{itemize}
+
+\subsection{What a sensible size is}
+
+Plan for a data model of roughly \textbf{three to six tables} with at least one
+\texttt{N:M} relationship, a handful of API endpoints (reading \emph{and}
+writing) and a frontend that operates the most important of those endpoints.
+That is enough to demonstrate all the concepts you have learned, and small
+enough to finish within the given effort.
 
 % ============================================================
-\section{Was aus den Vorlesungen einfließen soll}
+\section{Deliverables and effort}
 % ============================================================
 
-Ihr Vorschlag -- und später die Ausarbeitung -- soll erkennbar auf den Inhalten
-der Vorlesungen \textbf{01--10} aufbauen. Die folgende Tabelle zeigt, welcher
-Baustein aus welcher Vorlesung stammt und woran man ihn im Projekt erkennt.
+The finished term project consists of \textbf{three} parts, submitted together:
+
+\subsection{The running system}
+
+Database and API as containers on the lecture server (via Docker Compose), the
+frontend installed as a \texttt{.deb} on the same server. The source code lives
+in a Git repository.
+
+\subsection{The written documentation (GitHub repo with LaTeX CI)}
+
+The documentation is itself a small \textbf{LaTeX project} that describes the
+undertaking, the data model, the API, the frontend and the operation -- similar
+to the handouts of this course. It explains your design decisions and shows how
+the concepts from L 01--10 were implemented.
+
+\textbf{Submission format:} a \textbf{GitHub repository} with an integrated
+LaTeX build workflow (GitHub Actions) and a \texttt{Makefile}. On every tag push
+the workflow builds the PDF and attaches it to a \textbf{GitHub Release}.
+
+\begin{infobox}
+\textbf{You do not have to invent this setup.} This repository (DBMS\_10) ships a
+ready-to-use workflow (\texttt{.github/workflows/build.yml}) and \texttt{Makefile}
+-- \textbf{copy them} into your own documentation repository. A complete,
+buildable example lives in \texttt{example-documentation/}, and a fill-in
+skeleton for the proposal in \texttt{proposal-template/}.
+\end{infobox}
+
+\subsection{The video (8--10 minutes)}
+
+Record an \textbf{8--10-minute video} in which you demonstrate your system and
+explain the most important design decisions. For the submission you have
+\textbf{two options}:
+
+\begin{itemize}[leftmargin=1.4em, topsep=2pt]
+  \item upload it as an \texttt{.mpg} file to \textbf{Moodle}, \emph{or}
+  \item upload it to \textbf{YouTube}, set the visibility to
+        \textbf{``unlisted''} and submit only the \textbf{link}.
+\end{itemize}
+
+\subsection{Time frame and effort}
+
+\begin{itemize}[leftmargin=1.4em, topsep=2pt]
+  \item \textbf{Working window:} at most \textbf{2 months} from approval of the
+        proposal.
+  \item \textbf{Real workload:} about \textbf{one working week}
+        ($5 \times 8\,\text{h} \approx 40\,\text{h}$) --
+        \emph{including} documentation and video.
+\end{itemize}
+
+Scope your project to this budget: the system, the documentation \emph{and} the
+video together should be finished in roughly 40 hours of work.
+
+\subsection{Reuse of code}
+
+You \textbf{may reuse} code examples from the \textbf{lectures and the practical
+exercises}, provided you \textbf{cite the source} (e.g.\ ``after L 09, Docker
+Compose section'' or ``taken from DBMS\_08''). Third-party code without a source
+citation counts as an attempt to deceive.
+
+% ============================================================
+\section{What the lectures contribute}
+% ============================================================
+
+Your proposal -- and later the term project -- should visibly build on the
+contents of lectures \textbf{01--10}. The table below shows which building block
+comes from which lecture and how it becomes visible in the project.
 
 \renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\linewidth}{@{}p{1.5cm}p{4.6cm}X@{}}
+\begin{tabularx}{\linewidth}{@{}p{1.2cm}p{4.4cm}X@{}}
 \toprule
-\textbf{VL} & \textbf{Thema} & \textbf{Woran man es im Projekt erkennt} \\
+\textbf{L} & \textbf{Topic} & \textbf{How it becomes visible in the project} \\
 \midrule
-01 & Was ist ein DBMS, Drei-Ebenen-Modell & Begründung, \emph{warum} ein
-     relationales DBMS zum Vorhaben passt \\
-02 & ER-Modellierung, Kardinalitäten & Eine ER-Skizze mit Entitäten,
-     Beziehungen und Kardinalitäten \\
-03 & Relationales Modell, Schlüssel & Primär- und Fremdschlüssel, referentielle
-     Integrität \\
-04 & Normalisierung, Normalformen & Ein Schema mindestens in 3NF, ohne
-     Redundanzen \\
-05 & SQL DDL/DML & \texttt{CREATE TABLE}-Skript mit Constraints; Seed-Daten \\
-06 & SQL-Abfragen, JOINs, Aggregation & Abfragen hinter den API-Endpunkten
-     (mind. ein JOIN, eine Aggregation) \\
-07 & PostgreSQL im Betrieb & Ausführung auf PostgreSQL, Init-Skript, Datentypen \\
-08 & Python, psycopg2, FastAPI & Die REST-Schicht mit lesenden und schreibenden
-     Endpunkten \\
-09 & Docker, Compose, .env & \texttt{docker-compose.yml} mit Datenbank + API,
-     Secrets in \texttt{.env} \\
-10 & Frontend-Grundlagen & Ein bedienbares Frontend, das die API nutzt \\
+01 & What is a DBMS, three-level model & Justification \emph{why} a relational
+     DBMS fits the undertaking \\
+02 & ER modelling, cardinalities & An ER sketch with entities, relationships and
+     cardinalities \\
+03 & Relational model, keys & Primary and foreign keys, referential integrity \\
+04 & Normalisation, normal forms & A schema at least in 3NF, free of redundancy \\
+05 & SQL DDL/DML & \texttt{CREATE TABLE} script with constraints; seed data \\
+06 & SQL queries, JOINs, aggregation & Queries behind the API endpoints (at
+     least one JOIN, one aggregation) \\
+07 & PostgreSQL in operation & Running on PostgreSQL, init script, data types \\
+08 & Python, psycopg2, FastAPI & The REST layer with read and write endpoints,
+     protected by \texttt{X-API-Key} \\
+09 & Docker, Compose, .env & \texttt{docker-compose.yml} (postgres + api),
+     secrets in \texttt{.env}, deployment on the lecture server \\
+10 & Frontend basics & A usable frontend with a connection dialog (URL +
+     \texttt{X-API-Key}), built as a \texttt{.deb} installer \\
 \bottomrule
 \end{tabularx}
 
 \begin{infobox}
-\textbf{Was \emph{nicht} verpflichtend ist:} Die vertiefenden Inhalte aus den
-Vorlesungen \textbf{10--12} sind \emph{keine} Pflichtbestandteile der
-Ausarbeitung. Konkret sind \textbf{optional}:
+\textbf{What is \emph{not} mandatory:} The following are \textbf{optional},
+voluntary extensions:
 \begin{itemize}[leftmargin=1.4em, topsep=2pt]
-  \item das \emph{Verpacken} des Frontends als nativer Installer
-        (\texttt{.deb}, Setup-\texttt{.exe}, \texttt{.dmg}, PyInstaller) -- VL 10/13,
-  \item fortgeschrittenes Transaktions- und Isolationsverhalten (ACID,
-        Isolation Levels, Sperren, MVCC) -- VL 11,
-  \item Zeitreihendaten, InfluxDB und Grafana -- VL 12.
+  \item installers for further platforms (Windows setup \texttt{.exe}, macOS
+        \texttt{.dmg}) -- the Debian installer (\texttt{.deb}) for the frontend,
+        by contrast, is \textbf{required};
+  \item advanced transaction and isolation behaviour (ACID, isolation levels,
+        locks, MVCC) -- L 11;
+  \item time-series data, InfluxDB and Grafana -- L 12.
 \end{itemize}
-Ein \emph{funktionierendes} Frontend genügt; es muss nicht paketiert oder
-installierbar sein. Wer diese Themen dennoch einbaut, darf das gerne als
-freiwillige Erweiterung tun.
+Whoever includes these topics anyway is welcome to do so as a voluntary
+extension.
 \end{infobox}
 
 % ============================================================
-\section{Der Projektvorschlag -- Ihre Abgabe}
+\section{The project proposal -- your submission}
 % ============================================================
 
-Reichen Sie ein PDF von \textbf{2--4 Seiten} ein, das die folgenden Abschnitte
-enthält. Nutzen Sie die Überschriften als Vorlage.
+Submit a PDF of \textbf{2--4 pages} containing the following sections. Use the
+headings as a template -- a ready-to-fill skeleton is provided in
+\texttt{proposal-template/}.
 
-\subsection{Anwendungsdomäne und Motivation}
+\subsection{Application domain and motivation}
 
-Beschreiben Sie in wenigen Sätzen, \emph{welche} Anwendung Sie bauen und
-\emph{welches Problem} sie löst. Wer benutzt sie, und wofür? Ein oder zwei
-konkrete Nutzungsszenarien machen den Vorschlag greifbar.
+Describe in a few sentences \emph{which} application you build and \emph{which
+problem} it solves. Who uses it, and for what? One or two concrete usage
+scenarios make the proposal tangible.
 
-\subsection{Datenmodell -- ER-Skizze}
+\subsection{Data model -- ER sketch}
 
-Zeichnen Sie eine \textbf{ER-Skizze} (VL 02) mit den zentralen Entitätstypen,
-ihren wichtigsten Attributen und den Beziehungen samt \textbf{Kardinalitäten}.
-Eine saubere Handzeichnung als Foto ist völlig ausreichend. Achten Sie darauf,
-dass mindestens eine \texttt{N:M}-Beziehung vorkommt.
+Draw an \textbf{ER sketch} (L 02) with the central entity types, their most
+important attributes and the relationships including \textbf{cardinalities}. A
+clean hand drawing photographed is entirely sufficient. Make sure at least one
+\texttt{N:M} relationship occurs.
 
-\subsection{Vom Modell zum Schema}
+\subsection{From model to schema}
 
-Leiten Sie aus dem ER-Modell ein \textbf{Relationenschema} ab (VL 03). Nennen
-Sie pro Tabelle die Spalten, den \textbf{Primärschlüssel} und die
-\textbf{Fremdschlüssel}. Begründen Sie kurz, dass Ihr Schema frei von
-Redundanzen ist (mindestens 3NF, VL 04) -- ein bis zwei Sätze genügen.
+Derive a \textbf{relational schema} from the ER model (L 03). For each table,
+name the columns, the \textbf{primary key} and the \textbf{foreign keys}.
+Briefly argue that your schema is free of redundancy (at least 3NF, L 04) -- one
+or two sentences suffice.
 
-\subsection{API-Entwurf}
+\subsection{API design}
 
-Skizzieren Sie die geplanten \textbf{FastAPI-Endpunkte} (VL 08). Eine Tabelle
-reicht:
+Sketch the planned \textbf{FastAPI endpoints} (L 08). A table is enough:
 
 \renewcommand{\arraystretch}{1.2}
 \begin{tabularx}{\linewidth}{@{}p{2cm}p{4cm}X@{}}
 \toprule
-\textbf{Methode} & \textbf{Pfad} & \textbf{Zweck} \\
+\textbf{Method} & \textbf{Path} & \textbf{Purpose} \\
 \midrule
-\texttt{GET}  & \texttt{/…}  & liest Daten (mit JOIN/Aggregation im Hintergrund) \\
-\texttt{POST} & \texttt{/…}  & legt einen neuen Datensatz an \\
-\multicolumn{3}{@{}l}{\itshape … mindestens ein lesender und ein schreibender Endpunkt} \\
+\texttt{GET}  & \texttt{/…}  & reads data (with JOIN/aggregation behind it) \\
+\texttt{POST} & \texttt{/…}  & creates a new record (requires \texttt{X-API-Key}) \\
+\multicolumn{3}{@{}l}{\itshape … at least one reading and one writing endpoint} \\
 \bottomrule
 \end{tabularx}
 
-Markieren Sie, hinter welchem Endpunkt eine \textbf{Abfrage mit JOIN} und wo
-eine \textbf{Aggregation} steckt (VL 06).
+Mark behind which endpoint a \textbf{query with a JOIN} and where an
+\textbf{aggregation} sits (L 06), and which endpoints require the
+\texttt{X-API-Key}.
 
-\subsection{Frontend-Idee}
+\subsection{Frontend idea}
 
-Beschreiben Sie kurz, wie das Frontend aussieht und welche Endpunkte es bedient
-(VL 10). Ein grobes Wireframe oder eine Aufzählung der Bildschirme/Masken
-genügt. Geben Sie an, ob Sie die empfohlene Python-Variante (tkinter) oder etwas
-anderes nutzen -- und im zweiten Fall, was und warum.
+Briefly describe what the frontend looks like and which endpoints it operates
+(L 10). A rough wireframe or a list of the screens/forms is enough. State
+whether you use the recommended Python variant (tkinter) or something else --
+and in the latter case, what and why. Note that the frontend is delivered as a
+\textbf{\texttt{.deb} installer} and collects the API URL and key in a
+\textbf{connection dialog} at startup.
 
-\subsection{Betrieb mit Docker Compose}
+\subsection{Operation with Docker Compose}
 
-Listen Sie die \textbf{Dienste} auf, die in Ihrer \texttt{docker-compose.yml}
-laufen werden (mindestens \texttt{postgres} und \texttt{api}), und wo die
-Zugangsdaten liegen (\texttt{.env}, VL 09).
+List the \textbf{services} that will run in your \texttt{docker-compose.yml} (at
+least \texttt{postgres} and \texttt{api}), where the credentials live
+(\texttt{.env}, L 09) and how the backend is \textbf{deployed on the lecture
+server}.
 
-\subsection{Umfang, Meilensteine und Risiken}
+\subsection{Scope, milestones and risks}
 
-Schätzen Sie den Umfang ehrlich ein: Wie viele Tabellen und Endpunkte? Nennen
-Sie \textbf{2--3 Meilensteine} (z.\,B. ``Schema + Seed-Daten stehen'', ``API
-lesend/schreibend'', ``Frontend bedient die Kern-Endpunkte'') und \textbf{ein
-bis zwei Risiken}, an denen es scheitern könnte.
+Estimate the scope honestly: how many tables and endpoints? Name \textbf{2--3
+milestones} (e.g.\ ``schema + seed data ready'', ``API reading/writing'',
+``frontend operates the core endpoints'', ``documentation + video'') and
+\textbf{one or two risks} that could make it fail. Keep the total within the
+\textbf{$\approx$40\,h / 2-month} budget.
 
 % ============================================================
-\section{Formale Anforderungen an die Abgabe}
+\section{Formal requirements for the submission}
 % ============================================================
 
 \begin{itemize}[leftmargin=1.4em]
-  \item \textbf{Format:} ein PDF, 2--4 Seiten, mit den Abschnitten aus
-        Abschnitt~4.
-  \item \textbf{Abgabe:} per E-Mail an
-        \href{mailto:sboekelmann@ep1.rub.de}{sboekelmann@ep1.rub.de}. Legen Sie
-        das PDF zusätzlich in Ihr Projekt-Repository (etwa als
-        \texttt{docs/proposal.pdf}), sobald Sie eines angelegt haben.
-  \item \textbf{Betreff / Dateiname:} \texttt{Ausarbeitung-Vorschlag
-        <Nachname>}.
-  \item \textbf{Sprache:} Deutsch oder Englisch.
+  \item \textbf{Format:} one PDF, 2--4 pages, with the sections from
+        Section~5 (start from \texttt{proposal-template/}).
+  \item \textbf{Submission:} by email to
+        \href{mailto:sboekelmann@ep1.rub.de}{sboekelmann@ep1.rub.de}. Also place
+        the PDF in your project repository (e.g.\ as \texttt{docs/proposal.pdf})
+        once you have created one.
+  \item \textbf{Subject / file name:} \texttt{term-project-proposal
+        <surname>}.
+  \item \textbf{Language:} English.
 \end{itemize}
 
 \begin{warnbox}
-\textbf{Beginnen Sie noch nicht mit der Implementierung}, bevor der Vorschlag
-freigegeben ist. Warten Sie die Rückmeldung des Dozenten ab -- sie kann Umfang
-oder Datenmodell noch verschieben und erspart Ihnen so unnötige Arbeit.
+\textbf{Do not start the implementation} before the proposal is approved. Wait
+for the lecturer's feedback -- it may still shift scope or data model and thus
+save you unnecessary work.
 \end{warnbox}
 
 % ============================================================
-\section{Annahmekriterien -- Checkliste}
+\section{Acceptance criteria -- checklist}
 % ============================================================
 
-Ihr Vorschlag wird angenommen, wenn er die folgenden Punkte erfüllt. Nutzen Sie
-die Liste als Selbstkontrolle vor der Abgabe.
+Your proposal is accepted if it satisfies the following points. Use the list as
+a self-check before submitting.
 
 \begin{itemize}[leftmargin=1.8em, label=$\square$]
-  \item Anwendungsdomäne und Nutzen sind klar beschrieben.
-  \item Eine ER-Skizze mit Kardinalitäten liegt vor; mindestens eine
-        \texttt{N:M}-Beziehung ist enthalten.
-  \item Ein Relationenschema mit Primär- und Fremdschlüsseln ist abgeleitet
-        (3 bis 6 Tabellen, mind. 3NF).
-  \item Mindestens ein lesender und ein schreibender API-Endpunkt sind
-        vorgesehen; JOIN und Aggregation sind verortet.
-  \item Das Frontend und die von ihm genutzten Endpunkte sind skizziert.
-  \item Der Docker-Compose-Betrieb (postgres + api, \texttt{.env}) ist benannt.
-  \item Umfang, Meilensteine und Risiken sind realistisch dargestellt.
-  \item Der verbindliche Stack (PostgreSQL, FastAPI, Docker Compose, Frontend)
-        ist vollständig abgedeckt.
+  \item Application domain and benefit are described clearly.
+  \item An ER sketch with cardinalities is present; at least one \texttt{N:M}
+        relationship is included.
+  \item A relational schema with primary and foreign keys is derived
+        (3 to 6 tables, at least 3NF).
+  \item At least one reading and one writing API endpoint are planned; JOIN and
+        aggregation are located; write endpoints require the \texttt{X-API-Key}.
+  \item The frontend and the endpoints it uses are sketched; it is delivered as
+        a \texttt{.deb} with a connection dialog.
+  \item The Docker Compose backend (postgres + api, \texttt{.env}) and its
+        deployment on the lecture server are named.
+  \item Scope, milestones and risks are realistic and fit the
+        $\approx$40\,h / 2-month budget.
+  \item The mandatory stack (PostgreSQL, FastAPI, Docker Compose, frontend) is
+        fully covered.
 \end{itemize}
 
 % ============================================================
-\section{Ein durchgängiges Kurzbeispiel}
+\section{A worked mini-example}
 % ============================================================
 
-Damit Sie das erwartete Niveau einschätzen können, hier ein stark verkürztes
-Beispiel für die Domäne \emph{``Vereins-Bibliothek''}. Ihr eigener Vorschlag ist
-ausführlicher, dies zeigt nur die Richtung.
+So you can gauge the expected level, here is a strongly shortened example for
+the domain \emph{``Club Library''}. Your own proposal is more detailed; this
+only shows the direction. A full example documentation lives in
+\texttt{example-documentation/}.
 
 \begin{beispielbox}
-\textbf{Domäne.} Eine kleine Vereins-Bibliothek verwaltet Bücher, Mitglieder
-und Ausleihen. Mitglieder sollen sehen, welche Bücher verfügbar sind, und der
-Bibliothekar soll Ausleihen ein- und zurückbuchen.
+\textbf{Domain.} A small club library manages books, members and loans. Members
+want to see which books are available, and the librarian checks loans out and
+back in.
 
 \medskip
-\textbf{Datenmodell (Ausschnitt).}
+\textbf{Data model (excerpt).}
 \begin{itemize}[leftmargin=1.4em, topsep=2pt]
-  \item \texttt{mitglied}(\underline{id}, name, email)
-  \item \texttt{buch}(\underline{id}, titel, autor, isbn, bestand)
-  \item \texttt{ausleihe}(\underline{id}, \emph{mitglied\_id}, \emph{buch\_id},
-        von, bis, zurueck) -- realisiert die \texttt{N:M}-Beziehung zwischen
-        Mitglied und Buch.
+  \item \texttt{member}(\underline{id}, name, email)
+  \item \texttt{book}(\underline{id}, title, author, isbn, stock)
+  \item \texttt{loan}(\underline{id}, \emph{member\_id}, \emph{book\_id},
+        from, to, returned) -- realises the \texttt{N:M} relationship between
+        member and book.
 \end{itemize}
 
-\textbf{API (Ausschnitt).}
+\textbf{API (excerpt).}
 \begin{itemize}[leftmargin=1.4em, topsep=2pt]
-  \item \texttt{GET /buecher} -- alle Bücher mit Anzahl aktueller Ausleihen
-        (\emph{JOIN + Aggregation}).
-  \item \texttt{GET /mitglieder/\{id\}/ausleihen} -- offene Ausleihen eines
-        Mitglieds (\emph{JOIN}).
-  \item \texttt{POST /ausleihen} -- Buch ausleihen.
-  \item \texttt{POST /rueckgaben} -- Buch zurückbuchen.
+  \item \texttt{GET /books} -- all books with the number of current loans
+        (\emph{JOIN + aggregation}).
+  \item \texttt{GET /members/\{id\}/loans} -- open loans of a member
+        (\emph{JOIN}).
+  \item \texttt{POST /loans} -- lend a book (\emph{requires X-API-Key}).
+  \item \texttt{POST /returns} -- return a book (\emph{requires X-API-Key}).
 \end{itemize}
 
-\textbf{Frontend.} tkinter-Fenster mit zwei Reitern: ``Bücher'' (Tabelle +
-Suchfeld) und ``Ausleihe'' (Formular für Ausleihe/Rückgabe).
+\textbf{Frontend.} tkinter window with two tabs: ``Books'' (table + search
+field) and ``Loans'' (form for lending/returning). Packaged as a \texttt{.deb};
+asks for API URL and key at startup.
 
 \medskip
-\textbf{Betrieb.} \texttt{docker-compose.yml} mit den Diensten \texttt{postgres}
-und \texttt{api}; Passwörter in \texttt{.env}; Schema und Seed-Daten über ein
-Init-Skript.
+\textbf{Operation.} \texttt{docker-compose.yml} with the services
+\texttt{postgres} and \texttt{api}; passwords in \texttt{.env}; schema and seed
+data via an init script; deployed on the lecture server.
 
 \medskip
-\textbf{Meilensteine.} (1)~Schema + Seed-Daten; (2)~API lesend/schreibend;
-(3)~Frontend bedient beide Reiter. \textbf{Risiko:} korrektes Zurückbuchen bei
-gleichzeitig mehreren offenen Ausleihen desselben Buches.
+\textbf{Milestones.} (1)~schema + seed data; (2)~API reading/writing;
+(3)~frontend operates both tabs, packaged as \texttt{.deb};
+(4)~documentation + video. \textbf{Risk:} correct return handling when several
+open loans of the same book exist at once.
 \end{beispielbox}
 
 % ============================================================
-\section{Nächste Schritte}
+\section{Next steps}
 % ============================================================
 
 \begin{enumerate}[leftmargin=1.6em]
-  \item Wählen Sie eine Domäne, die Sie interessiert -- Sie werden ein ganzes
-        Semester daran arbeiten.
-  \item Skizzieren Sie das ER-Modell auf Papier und leiten Sie das Schema ab.
-  \item Füllen Sie die Abschnitte aus Abschnitt~4 aus und prüfen Sie die
-        Checkliste in Abschnitt~6.
-  \item Senden Sie das PDF an den Dozenten und warten Sie die Freigabe ab.
+  \item Choose a domain that interests you -- you will work on it for up to two
+        months.
+  \item Sketch the ER model on paper and derive the schema.
+  \item Copy \texttt{proposal-template/} and fill in the sections from
+        Section~5, then check the checklist in Section~7.
+  \item Send the PDF to the lecturer and wait for approval.
 \end{enumerate}
 
 \vspace{1em}
 \begin{infobox}
-\textbf{Weiterführend:} Die Übungen DBMS\_07 (PostgreSQL), DBMS\_08 (FastAPI),
-DBMS\_09 (Docker Compose) und die Vorlesung~10 (Frontend) sind Ihre wichtigsten
-Referenzen für die Umsetzung. Sie müssen für den Vorschlag nichts Neues lernen
--- nur das Bekannte auf Ihre eigene Idee anwenden.
+\textbf{Further reading:} The exercises DBMS\_07 (PostgreSQL), DBMS\_08
+(FastAPI), DBMS\_09 (Docker Compose) and lecture~10 (frontend) are your most
+important references for the implementation. You need not learn anything new for
+the proposal -- only apply the familiar to your own idea.
 \end{infobox}
 
 \end{document}

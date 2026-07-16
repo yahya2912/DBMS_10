@@ -57,6 +57,21 @@ includegraphics} and keep the caption.
 <<< Which application do you build and which problem does it solve? Who uses
 it, and for what? Add one or two concrete usage scenarios. >>>
 
+The project targets chess players who want to personally track their
+record of games instead o frelying on commercial platforms such as 
+chess.com or lichess. The system imports games from PGN files, stores them 
+with metadata (players, ELO, result, opening, time control...), and lets the user
+query their own performance, something laong the lines of win rate with a specific
+opening, or results against a given opponent.
+
+\textbf{Usage scenarios:}
+\begin{enumerate}
+  \item A player imports a batch of PGN files exported from an online platform. The
+  system parses each game and stores it, so the player can later browse and filter games
+  by opening or result.
+  \item A player adds a single over-the-board game manually through the frontend nad later 
+  retrieves statistics to track long-term progress. 
+
 % ============================================================
 \section{Data model -- ER sketch}
 % ============================================================

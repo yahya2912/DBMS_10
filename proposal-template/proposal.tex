@@ -28,8 +28,8 @@
 % ----- Fill in your metadata -------------------------------
 \renewcommand{\thgaKurs}{Databases}
 \renewcommand{\thgaDatum}{Summer Term 2026}
-\newcommand{\authorName}{<<< Your name >>>}
-\newcommand{\projectTitle}{<<< Working title of your application >>>}
+\newcommand{\authorName}{Yahya El Idrissi}
+\newcommand{\projectTitle}{Chess Club Tournament \& Rating Manager}
 
 \begin{document}
 \thispagestyle{empty}
@@ -54,8 +54,30 @@ includegraphics} and keep the caption.
 \section{Application domain and motivation}
 % ============================================================
 
-<<< Which application do you build and which problem does it solve? Who uses
-it, and for what? Add one or two concrete usage scenarios. >>>
+The project is a \textbf{Chess Club Tournament \& Rating Manager}: a small,
+self-hosted system that lets a chess club run Swiss-system tournaments, record
+game results, maintain Elo ratings over time and answer performance questions
+across a player's whole game history. Small clubs today typically use a
+spreadsheet for the member list, a second spreadsheet per tournament for the
+pairings and results, and no persistent record of ratings or openings played, 
+which makes any resembling question (``how does player X score with Black
+in the Sicilian?'') practically unanswerable. Consolidating this into a single
+relational store solves that.
+
+Two typical usage scenarios would be for example:
+\begin{itemize}[topsep=2pt]
+  \item \textbf{Tournament director, Friday evening.} The director opens a new
+        four-round Swiss tournament, registers twelve players from the existing
+        member list, records the results of round 1 through the frontend and
+        prints the standings after each round. Elo ratings update automatically
+        when the tournament is closed.
+  \item \textbf{Club member, at home.} A player opens the frontend, points it
+        at the club server and looks up their personal statistics: overall
+        win/draw/loss counts, score by colour, score per opening and Elo
+        progression over the last twelve months.
+\end{itemize}
+
+
 
 % ============================================================
 \section{Data model -- ER sketch}

@@ -1,21 +1,15 @@
 % ============================================================
-%  TERM PROJECT – PROPOSAL (template)
+%  TERM PROJECT – PROPOSAL
 %  Databases · THGA Bochum
-%
-%  How to use:
-%    1. Copy this folder into your own repository.
-%    2. Replace every  <<< ... >>>  placeholder with your content.
-%    3. Build with  `make`  (see the Makefile / README).
-%    4. Send the resulting PDF to the lecturer and wait for approval.
+%  Chess Club Tournament & Rating Manager
 % ============================================================
 \documentclass[11pt,a4paper]{article}
 
 \usepackage{thga-db}
 \usepackage{caption}   % enables \captionof inside minipages
+\graphicspath{{assets/}}
 
 % ----- Placeholder figure (delete once you insert a real image) ----
-% Draws a labelled box you can swap for \includegraphics later.
-% Usage: \placeholder{width}{height}{label text}
 \usetikzlibrary{positioning}
 \newcommand{\placeholder}[3]{%
   \begin{tikzpicture}
@@ -25,7 +19,7 @@
   \end{tikzpicture}%
 }
 
-% ----- Fill in your metadata -------------------------------
+% ----- Metadata --------------------------------------------
 \renewcommand{\thgaKurs}{Databases}
 \renewcommand{\thgaDatum}{Summer Term 2026}
 \newcommand{\authorName}{Yahya El Idrissi}
@@ -33,21 +27,13 @@
 
 \begin{document}
 \thispagestyle{empty}
-\thgaTitel{Term Project – Proposal}{\projectTitle}
+\thgaTitel{Term Project -- Proposal}{\projectTitle}
 
 \begin{infobox}
 \textbf{Author:} \authorName \\
 \textbf{Module:} Introduction to Database Management Systems · THGA Bochum \\
 \textbf{Submitted to:} Stephan Bökelmann · \href{mailto:sboekelmann@ep1.rub.de}{sboekelmann@ep1.rub.de} \\
 \textbf{Target size:} about 6 pages
-\end{infobox}
-
-\begin{infobox}
-\textbf{Every figure must be explained in the running text.} A figure never
-stands on its own: refer to it by number and say what it shows -- e.g.
-``Figure~\ref{fig:er} shows the ER model of \dots''. The placeholder boxes below
-mark where your own images go; replace each with \texttt{\textbackslash
-includegraphics} and keep the caption.
 \end{infobox}
 
 % ============================================================
@@ -57,18 +43,19 @@ includegraphics} and keep the caption.
 The project is a \textbf{Chess Club Tournament \& Rating Manager}: a small,
 self-hosted system that lets a chess club run Swiss-system tournaments, record
 game results, maintain Elo ratings over time and answer performance questions
-across a player's whole game history. Small clubs today typically use a
+across a player's whole game history. Small clubs today typically juggle a
 spreadsheet for the member list, a second spreadsheet per tournament for the
-pairings and results, and no persistent record of ratings or openings played, 
+pairings and results, and no persistent record of ratings or openings played --
 which makes any resembling question (``how does player X score with Black
 in the Sicilian?'') practically unanswerable. Consolidating this into a single
 relational store solves that.
 
-Two typical usage scenarios would be for example:
+Two concrete usage scenarios illustrate the intended use:
+
 \begin{itemize}[topsep=2pt]
   \item \textbf{Tournament director, Friday evening.} The director opens a new
         four-round Swiss tournament, registers twelve players from the existing
-        member list, records the results of round 1 through the frontend and
+        member list, records the results of round~1 through the frontend and
         prints the standings after each round. Elo ratings update automatically
         when the tournament is closed.
   \item \textbf{Club member, at home.} A player opens the frontend, points it
@@ -77,69 +64,106 @@ Two typical usage scenarios would be for example:
         progression over the last twelve months.
 \end{itemize}
 
-
-
 % ============================================================
 \section{Data model -- ER sketch}
 % ============================================================
 
 \begin{figure}[ht]
   \centering
-  % Replace the placeholder with: \includegraphics[width=0.85\linewidth]{er-sketch.jpg}
-  \placeholder{0.85\linewidth}{4.5cm}{[ placeholder ]\\ your ER sketch goes here\\ (a photographed hand drawing is fine)}
-  \caption{ER sketch of the <<< domain >>> data model: entity types, key
-  attributes, relationships and cardinalities (at least one N:M).}
+  \includegraphics[width=0.85\linewidth]{assets/fig_1.png}
+  \caption{ER sketch of the chess-club data model: entity types, key attributes,
+  relationships and cardinalities. The central N:M relationship is
+  \emph{player~$\leftrightarrow$~tournament}, realised through the associative
+  entity \texttt{registration}.}
   \label{fig:er}
 \end{figure}
 
-Figure~\ref{fig:er} shows <<< explain your ER model here: name the central
-entity types, the key attributes and the relationships, and point out the N:M
-relationship and its cardinalities. >>>
+Figure~\ref{fig:er} shows the data model. The central entity types are
+\texttt{player} (name, birth year, current Elo), \texttt{tournament} (name,
+start date, number of rounds, status), \texttt{round} (round number within a
+tournament), \texttt{game} (the associative entity linking two players, one
+round and one opening, plus the result), \texttt{opening} (ECO code, name) and
+\texttt{rating\_history} (Elo value of a player at a point in time). The
+mandatory \textbf{N:M relationship} is
+\emph{player~$\leftrightarrow$~tournament}: a player takes part in many
+tournaments over time, and a tournament has many players. It is resolved by the
+associative entity \texttt{registration}, which carries the seed and the final
+rank. The \texttt{game} entity itself is a second, richer N:M associative
+entity, linking two players (white and black) with an opening within a round.
+The relationship
+\emph{tournament~$\rightarrow$~round~$\rightarrow$~game} is a strict 1:N chain,
+and \emph{player~$\rightarrow$~rating\_history} is 1:N as well.
 
 % ============================================================
 \section{From model to schema}
 % ============================================================
 
-<<< Derive the relational schema. For each table give the columns, the primary
-key (underlined) and the foreign keys. >>>
+The relational schema derived from Figure~\ref{fig:er} consists of six tables:
 
 \begin{itemize}
-  \item \texttt{<<<table>>>}(\underline{id}, <<<column>>>, \dots)
-  \item \texttt{<<<table>>>}(\underline{id}, \emph{<<<foreign\_key>>>}, \dots)
+  \item \texttt{player}(\underline{id}, name, birth\_year, current\_elo)
+  \item \texttt{opening}(\underline{eco\_code}, name)
+  \item \texttt{tournament}(\underline{id}, name, start\_date, num\_rounds, status)
+  \item \texttt{registration}(\underline{\emph{player\_id}, \emph{tournament\_id}}, seed, final\_rank)
+  \item \texttt{round}(\underline{id}, \emph{tournament\_id}, round\_no, \\ \hspace*{1em}\textsc{unique}(tournament\_id, round\_no))
+  \item \texttt{game}(\underline{id}, \emph{round\_id}, \emph{white\_id}, \emph{black\_id}, \emph{eco\_code}, result, \\ \hspace*{1em}\textsc{check}(result IN (\texttt{'1-0'}, \texttt{'0-1'}, \texttt{'1/2-1/2'})), \\ \hspace*{1em}\textsc{check}(white\_id $\neq$ black\_id))
+  \item \texttt{rating\_history}(\underline{id}, \emph{player\_id}, valid\_from, elo)
 \end{itemize}
 
-\textbf{Normalisation.} <<< One or two sentences: why is the schema free of
-redundancy (at least 3NF)? >>>
+Foreign keys: \texttt{registration.player\_id}~$\to$~\texttt{player},
+\texttt{registration.tournament\_id}~$\to$~\texttt{tournament},
+\texttt{round.tournament\_id}~$\to$~\texttt{tournament},
+\texttt{game.round\_id}~$\to$~\texttt{round},
+\texttt{game.white\_id}, \texttt{game.black\_id}~$\to$~\texttt{player},
+\texttt{game.eco\_code}~$\to$~\texttt{opening},
+\texttt{rating\_history.player\_id}~$\to$~\texttt{player}.
+
+\textbf{Normalisation.} Every non-key attribute depends on the whole primary key
+and only on it: opening names live in \texttt{opening}, not repeated in
+\texttt{game}; a player's current Elo is stored once in \texttt{player} and its
+history is factored into \texttt{rating\_history}. There are no transitive
+dependencies, so the schema is in \textbf{3NF}.
 
 % ============================================================
 \section{API design}
 % ============================================================
 
-<<< List the planned FastAPI endpoints. Mark where a JOIN / an aggregation
-sits, and which endpoints require the X-API-Key. >>>
+The FastAPI layer exposes read endpoints for public statistics and standings and
+write endpoints (protected by \texttt{X-API-Key}) for anything that mutates
+club data.
 
 \renewcommand{\arraystretch}{1.2}
-\begin{tabularx}{\linewidth}{@{}p{2cm}p{4cm}X@{}}
+\begin{tabularx}{\linewidth}{@{}p{1.6cm}p{4.6cm}X@{}}
 \toprule
 \textbf{Method} & \textbf{Path} & \textbf{Purpose} \\
 \midrule
-\texttt{GET}  & \texttt{/<<<…>>>} & <<< reads … (JOIN / aggregation) >>> \\
-\texttt{POST} & \texttt{/<<<…>>>} & <<< creates … (requires X-API-Key) >>> \\
+\texttt{GET}  & \texttt{/players}                              & list of players with total games played (\emph{JOIN + aggregation}) \\
+\texttt{GET}  & \texttt{/players/\{id\}/stats}                 & win/draw/loss and average Elo delta grouped by opening (\emph{JOIN + aggregation}) \\
+\texttt{GET}  & \texttt{/tournaments}                          & list of all tournaments \\
+\texttt{GET}  & \texttt{/tournaments/\{id\}/standings}         & points per player + Buchholz tiebreak (\emph{JOIN across 4 tables + aggregation}) \\
+\texttt{POST} & \texttt{/players}                              & create a new player (\emph{X-API-Key}) \\
+\texttt{POST} & \texttt{/tournaments}                          & create a new tournament (\emph{X-API-Key}) \\
+\texttt{POST} & \texttt{/tournaments/\{id\}/registrations}     & register a player (\emph{X-API-Key}) \\
+\texttt{POST} & \texttt{/games}                                & record a game result, triggers Elo update (\emph{X-API-Key}) \\
 \bottomrule
 \end{tabularx}
+
+The signature endpoint is \texttt{GET /tournaments/\{id\}/standings}: it JOINs
+\texttt{registration}, \texttt{game}, \texttt{round} and \texttt{player},
+groups by player and computes \texttt{SUM(points)} plus the Buchholz sum of the
+opponents' scores. All four \texttt{POST} endpoints require the
+\texttt{X-API-Key} header (dependency injection as in L~08).
 
 % ============================================================
 \section{Frontend prototype (hand sketches)}
 % ============================================================
 
-<<< Describe what the frontend looks like and which endpoints it operates, and
-document a prototypical frontend with hand-drawn sketches -- one per screen/form.
-Python/tkinter is recommended; if you use something else, say what and why. The
-frontend is delivered as a .deb installer and asks for the API URL and X-API-Key
-in a connection dialog at startup. >>>
+The frontend is a \textbf{Python/tkinter} desktop application, packaged as a
+\texttt{.deb} installer as required, and asking for the API URL and
+\texttt{X-API-Key} in a connection dialog at startup. tkinter is chosen because
+it is the recommended variant from L~10, ships with the Python standard
+library, and packages cleanly into a Debian archive.
 
-% The four boxes below are placeholders. Replace each \placeholder{...} with
-% \includegraphics[width=\linewidth]{your-sketch.jpg} and keep the \captionof.
 \begin{figure}[ht]
 \centering
 \begin{minipage}[t]{0.47\linewidth}\centering
@@ -148,92 +172,129 @@ in a connection dialog at startup. >>>
   \label{fig:fe-connect}
 \end{minipage}\hfill
 \begin{minipage}[t]{0.47\linewidth}\centering
-  \placeholder{\linewidth}{3.5cm}{[ placeholder ]\\ main / list screen}
-  \captionof{figure}{Main screen: <<< list/table, calls \texttt{GET /<<<…>>>} >>>.}
+  \placeholder{\linewidth}{3.5cm}{[ placeholder ]\\ tournament standings}
+  \captionof{figure}{Standings screen: table of players, calls \texttt{GET /tournaments/\{id\}/standings}.}
   \label{fig:fe-main}
 \end{minipage}
 
 \vspace{1em}
 
 \begin{minipage}[t]{0.47\linewidth}\centering
-  \placeholder{\linewidth}{3.5cm}{[ placeholder ]\\ detail / form screen}
-  \captionof{figure}{Detail form: <<< create/edit, calls \texttt{POST /<<<…>>>} >>>.}
+  \placeholder{\linewidth}{3.5cm}{[ placeholder ]\\ record-game form}
+  \captionof{figure}{Record-game form: white, black, opening, result -- calls \texttt{POST /games}.}
   \label{fig:fe-detail}
 \end{minipage}\hfill
 \begin{minipage}[t]{0.47\linewidth}\centering
-  \placeholder{\linewidth}{3.5cm}{[ placeholder ]\\ second feature screen}
-  \captionof{figure}{<<< Second feature screen and the endpoint it calls >>>.}
+  \placeholder{\linewidth}{3.5cm}{[ placeholder ]\\ player stats screen}
+  \captionof{figure}{Player-stats screen: calls \texttt{GET /players/\{id\}/stats}.}
   \label{fig:fe-second}
 \end{minipage}
 \end{figure}
 
 Figures~\ref{fig:fe-connect}--\ref{fig:fe-second} show the four screens of the
-prototype. Figure~\ref{fig:fe-connect} shows <<< the connection dialog that
-collects the API URL and X-API-Key at startup >>>; Figure~\ref{fig:fe-main}
-shows <<< the main screen and the endpoint it reads from >>>;
-Figure~\ref{fig:fe-detail} shows <<< the form used to create/edit a record and
-the write endpoint it calls >>>; and Figure~\ref{fig:fe-second} shows <<< the
-remaining screen >>>.
+prototype. Figure~\ref{fig:fe-connect} shows the connection dialog that
+collects the API URL and \texttt{X-API-Key} at startup and stores them in the
+running session. Figure~\ref{fig:fe-main} shows the standings screen, the main
+list view of the application, which reads from
+\texttt{GET /tournaments/\{id\}/standings} and refreshes on demand.
+Figure~\ref{fig:fe-detail} shows the record-game form used by the tournament
+director to enter a result; it calls \texttt{POST /games} with the
+\texttt{X-API-Key} header. Figure~\ref{fig:fe-second} shows the player-stats
+screen, which reads \texttt{GET /players/\{id\}/stats} and renders the
+win/draw/loss breakdown per opening.
 
 % ============================================================
 \section{Operation with Docker Compose}
 % ============================================================
 
-<<< Which services run in your docker-compose.yml (at least postgres and api)?
-Where do the credentials live (.env)? How is the backend deployed on the
-lecture server? >>>
+The \texttt{docker-compose.yml} defines two services: \texttt{postgres}
+(official \texttt{postgres:16} image, with the schema and seed data mounted as
+an init script under \texttt{/docker-entrypoint-initdb.d}) and \texttt{api}
+(the FastAPI application, built from a local \texttt{Dockerfile}). Credentials
+-- \texttt{POSTGRES\_USER}, \texttt{POSTGRES\_PASSWORD}, \texttt{POSTGRES\_DB}
+and \texttt{API\_KEY} -- live in a \texttt{.env} file that is
+\texttt{.gitignore}-d, following L~09. Deployment on the lecture server is one
+step: clone the repository, place \texttt{.env} beside the compose file and run
+\texttt{docker compose up -d}. The frontend \texttt{.deb} is installed
+separately on the same server via \texttt{sudo dpkg -i chess-club-fe.deb} and
+connects to the API over HTTP.
 
 % ============================================================
 \section{Scope, milestones and risks}
 % ============================================================
 
-\textbf{Scope.} <<< How many tables and endpoints? >>>
+\textbf{Scope.} 6 tables, 8 endpoints (4 read, 4 write), 4 tkinter screens plus
+the connection dialog.
 
-\textbf{Milestones and schedule.} <<< Fill in the week and the estimated hours;
-the hours should add up to roughly 40. >>>
+\textbf{Milestones and schedule.}
 
 \renewcommand{\arraystretch}{1.2}
 \begin{tabularx}{\linewidth}{@{}p{1.4cm}Xp{1.8cm}@{}}
 \toprule
 \textbf{Week} & \textbf{Milestone} & \textbf{Est. hours} \\
 \midrule
-<<<1>>>   & <<< e.g. schema + seed data ready >>>                        & <<<8>>> \\
-<<<2--3>>> & <<< e.g. API reading/writing, protected by X-API-Key >>>   & <<<12>>> \\
-<<<4--5>>> & <<< e.g. frontend operates the core endpoints, .deb >>>    & <<<10>>> \\
-<<<6>>>   & <<< e.g. tests + documentation + video >>>                  & <<<10>>> \\
+1     & Schema, DDL, seed data (players + one closed tournament) ready in PostgreSQL & 8 \\
+2--3  & FastAPI: read + write endpoints, \texttt{X-API-Key} dependency, standings query with JOIN + aggregation & 12 \\
+4--5  & tkinter frontend (4 screens + connection dialog); \texttt{.deb} builds and installs on the lecture server & 10 \\
+6     & \texttt{pytest} test suite, documentation (LaTeX repo with CI), 8--10 min video & 10 \\
 \bottomrule
 \end{tabularx}
 
-\textbf{Risks.} <<< One or two risks that could make the project fail. >>>
+\textbf{Risks.} (1)~The Elo update on \texttt{POST /games} is a small business
+rule with real edge cases (both players' ratings must move symmetrically, and
+recording a game against an unregistered player must be refused). Getting this
+subtly wrong is the most likely way to fail correctness tests.
+(2)~Packaging the tkinter frontend as a working \texttt{.deb} on the lecture
+server is a build-system risk unrelated to the database itself.
 
 % ============================================================
 \section{Acceptance criteria and testing}
 % ============================================================
 
-<<< State when your system counts as ``done and correct'', and how you prove it.
-Formulate each criterion as a checkable statement, then name the test that backs
-it. Turn the risk above into at least one concrete test case. >>>
+The system counts as done and correct when the criteria below hold on the
+lecture server, verified by an automated test suite.
 
-\textbf{Acceptance criteria.} <<< Checkable statements about the finished system. >>>
+\textbf{Acceptance criteria.}
 \begin{itemize}[topsep=2pt]
-  \item <<< e.g. A record that violates a constraint is rejected (API returns 4xx). >>>
-  \item <<< e.g. GET /<<<…>>> returns the correct aggregated value (JOIN + aggregation). >>>
-  \item <<< e.g. Write endpoints without a valid X-API-Key are refused (401/403). >>>
+  \item A \texttt{POST /games} with \texttt{white\_id = black\_id} is rejected
+        with HTTP~400 (\textsc{check} constraint).
+  \item A \texttt{POST /games} whose \texttt{result} is not in
+        \texttt{\{'1-0','0-1','1/2-1/2'\}} is rejected with HTTP~400.
+  \item Registering the same player twice for the same tournament is rejected
+        with HTTP~409 (primary key on \texttt{registration}).
+  \item Recording a game for a player who is not registered in that
+        tournament is rejected with HTTP~409.
+  \item \texttt{GET /tournaments/\{id\}/standings} returns the correct
+        \texttt{SUM(points)} per player and Buchholz tiebreak (JOIN +
+        aggregation).
+  \item Every \texttt{POST} endpoint without a valid \texttt{X-API-Key}
+        returns HTTP~401.
 \end{itemize}
 
-\textbf{Test plan.} <<< What you test and with which tools. A short list is enough. >>>
+\textbf{Test plan.}
 \begin{itemize}[topsep=2pt]
-  \item \textbf{Database:} <<< which constraints (PK/FK/UNIQUE/NOT NULL) you verify. >>>
-  \item \textbf{API:} <<< endpoint tests, happy path + error cases, e.g. with
-        \texttt{pytest} and FastAPI's \texttt{TestClient} against a test database (L 08). >>>
-  \item \textbf{Business rule:} <<< the test that covers the risk named above. >>>
+  \item \textbf{Database:} PK on all tables, composite PK on
+        \texttt{registration}, FKs on \texttt{round}, \texttt{game},
+        \texttt{registration}, \texttt{rating\_history}, \textsc{unique} on
+        \texttt{(tournament\_id, round\_no)}, \textsc{check} on
+        \texttt{game.result} and on \texttt{white\_id $\neq$ black\_id},
+        \textsc{not null} on all foreign keys.
+  \item \textbf{API:} \texttt{pytest} with FastAPI's \texttt{TestClient}
+        against a throw-away PostgreSQL container (as in L~08). Happy paths
+        for all four \texttt{GET} endpoints and all four \texttt{POST}
+        endpoints, plus 4xx error cases for each acceptance criterion above.
+  \item \textbf{Business rule (risk 1).} Dedicated test that records a game
+        for a player \emph{not} registered in the tournament and asserts
+        HTTP~409; a second test records a legal game and asserts that both
+        players' Elo values change symmetrically and that a
+        \texttt{rating\_history} row is written for each.
 \end{itemize}
 
 \vspace{1em}
 \begin{infobox}
 \textbf{Effort budget:} the whole term project (system, documentation and video)
-should fit into roughly \textbf{40\,h of work} over at most \textbf{2 months}.
-Keep your scope within that budget.
+fits into roughly \textbf{40\,h of work} over at most \textbf{2 months}. The
+milestone table above sums to exactly that budget.
 \end{infobox}
 
 \end{document}

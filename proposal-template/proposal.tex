@@ -171,8 +171,7 @@ The signature endpoint is \texttt{GET /tournaments/\{id\}/standings}: it JOINs
 The frontend is a \textbf{Python/tkinter} desktop application, packaged as a
 \texttt{.deb} installer as required, and asking for the API URL and
 \texttt{X-API-Key} in a connection dialog at startup. tkinter is chosen because
-it is the recommended variant from L~10, ships with the Python standard
-library, and packages cleanly into a Debian archive.
+it ships with the Python standard library, and packages cleanly into a Debian archive.
 
 \begin{figure}[ht]
 \centering
@@ -223,7 +222,7 @@ an init script under \texttt{/docker-entrypoint-initdb.d}) and \texttt{api}
 (the FastAPI application, built from a local \texttt{Dockerfile}). Credentials
 -- \texttt{POSTGRES\_USER}, \texttt{POSTGRES\_PASSWORD}, \texttt{POSTGRES\_DB}
 and \texttt{API\_KEY} -- live in a \texttt{.env} file that is
-\texttt{.gitignore}-d, following L~09. Deployment on the lecture server is one
+\texttt{.gitignore}-d. Deployment on the lecture server is one
 step: clone the repository, place \texttt{.env} beside the compose file and run
 \texttt{docker compose up -d}. The frontend \texttt{.deb} is installed
 separately on the same server via \texttt{sudo dpkg -i chess-club-fe.deb} and
@@ -233,7 +232,7 @@ connects to the API over HTTP.
 \section{Scope, milestones and risks}
 % ============================================================
 
-\textbf{Scope.} 6 tables, 8 endpoints (4 read, 4 write), 4 tkinter screens plus
+\textbf{Scope.} 7 tables, 8 endpoints (4 read, 4 write), 4 tkinter screens plus
 the connection dialog.
 
 \textbf{Milestones and schedule.}
@@ -290,7 +289,7 @@ lecture server, verified by an automated test suite.
         \texttt{game.result} and on \texttt{white\_id $\neq$ black\_id},
         \textsc{not null} on all foreign keys.
   \item \textbf{API:} \texttt{pytest} with FastAPI's \texttt{TestClient}
-        against a throw-away PostgreSQL container (as in L~08). Happy paths
+        against a throw-away PostgreSQL container. Happy paths
         for all four \texttt{GET} endpoints and all four \texttt{POST}
         endpoints, plus 4xx error cases for each acceptance criterion above.
   \item \textbf{Business rule (risk 1).} Dedicated test that records a game

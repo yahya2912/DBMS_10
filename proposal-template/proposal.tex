@@ -81,15 +81,15 @@ Two concrete usage scenarios illustrate the intended use:
 Figure~\ref{fig:er} shows the data model. The central entity types are
 \texttt{player} (name, birth year, current Elo), \texttt{tournament} (name,
 start date, number of rounds, status), \texttt{round} (round number within a
-tournament), \texttt{game} (the associative entity linking two players, one
-round and one opening, plus the result), \texttt{opening} (ECO code, name) and
+tournament), \texttt{game} (linking two players and one opening within a
+round, plus the result), \texttt{opening} (ECO code, name) and
 \texttt{rating\_history} (Elo value of a player at a point in time). The
 mandatory \textbf{N:M relationship} is
 \emph{player~$\leftrightarrow$~tournament}: a player takes part in many
-tournaments over time, and a tournament has many players. It is resolved by the
-associative entity \texttt{registration}, which carries the seed and the final
-rank. The \texttt{game} entity itself is a second, richer N:M associative
-entity, linking two players (white and black) with an opening within a round.
+tournaments over time, and a tournament has many players. It is resolved by
+the associative entity \texttt{registration}, which carries the seed and the
+final rank. Every \texttt{game} connects two players (white and black),
+belongs to exactly one round, and uses exactly one opening.
 The relationship
 \emph{tournament~$\rightarrow$~round~$\rightarrow$~game} is a strict 1:N chain,
 and \emph{player~$\rightarrow$~rating\_history} is 1:N as well.
@@ -171,7 +171,7 @@ The signature endpoint is \texttt{GET /tournaments/\{id\}/standings}: it JOINs
 The frontend is a \textbf{Python/tkinter} desktop application, packaged as a
 \texttt{.deb} installer as required, and asking for the API URL and
 \texttt{X-API-Key} in a connection dialog at startup. tkinter is chosen because
-it ships with the Python standard library, and packages cleanly into a Debian archive.
+it ships with the Python standard library and packages cleanly into a Debian archive.
 
 \begin{figure}[ht]
 \centering

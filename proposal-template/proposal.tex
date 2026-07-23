@@ -137,7 +137,6 @@ dependencies, so the schema is in \textbf{3NF}.
 % ============================================================
 \section{API design}
 % ============================================================
-
 The FastAPI layer exposes read endpoints for public statistics and standings and
 write endpoints (protected by \texttt{X-API-Key}) for anything that mutates
 club data.
@@ -147,8 +146,8 @@ club data.
 \toprule
 \textbf{Method} & \textbf{Path} & \textbf{Purpose} \\
 \midrule
-\texttt{GET}  & \texttt{/players}                              & list of players with total games played (\emph{JOIN + aggregation}) \\
-\texttt{GET}  & \texttt{/players/\{id\}/stats}                 & win/draw/loss and average Elo delta grouped by opening (\emph{JOIN + aggregation}) \\
+\texttt{GET}  & \texttt{/players}                              & list of players with total games played, computed as \texttt{COUNT(*)} over \texttt{game} where the player appears as \texttt{white\_id} or \texttt{black\_id} (\emph{JOIN + aggregation}) \\
+\texttt{GET}  & \texttt{/players/\{id\}/stats}                 & win/draw/loss and average Elo delta grouped by \texttt{opening.name} (\emph{JOIN game~$\bowtie$~opening + aggregation}) \\
 \texttt{GET}  & \texttt{/tournaments}                          & list of all tournaments \\
 \texttt{GET}  & \texttt{/tournaments/\{id\}/standings}         & points per player + Buchholz tiebreak (\emph{JOIN across 4 tables + aggregation}) \\
 \texttt{POST} & \texttt{/players}                              & create a new player (\emph{X-API-Key}) \\
@@ -158,13 +157,12 @@ club data.
 \bottomrule
 \end{tabularx}
 
-The signature endpoint is \texttt{GET /tournaments/\{id\}/standings}:
-it JOINs \texttt{registration} to \texttt{player} on
-\texttt{player\_id}, and \texttt{game} to \texttt{round} on
-\texttt{round\_id} (filtered by \texttt{round.tournament\_id}), then
-groups by player to compute \texttt{SUM(points)} plus the Buchholz
-sum of the opponents' scores. All four \texttt{POST} endpoints
-require the \texttt{X-API-Key} header.
+The signature endpoint is \texttt{GET /tournaments/\{id\}/standings}: it JOINs
+\texttt{registration} to \texttt{player} on \texttt{player\_id}, and
+\texttt{game} to \texttt{round} on \texttt{round\_id} (filtered by
+\texttt{round.tournament\_id}), then groups by player to compute
+\texttt{SUM(points)} plus the Buchholz sum of the opponents' scores. All four
+\texttt{POST} endpoints require the \texttt{X-API-Key} header.
 
 % ============================================================
 \section{Frontend prototype (hand sketches)}

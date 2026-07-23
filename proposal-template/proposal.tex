@@ -98,15 +98,25 @@ and \emph{player~$\rightarrow$~rating\_history} is 1:N as well.
 \section{From model to schema}
 % ============================================================
 
-The relational schema derived from Figure~\ref{fig:er} consists of six tables:
+Applying the ER-to-relational mapping rules to Figure~\ref{fig:er} 
+yields a schema of seven tables:
+each strong entity becomes a table, the N:M relationship
+\texttt{plays\_in} becomes its own table \texttt{registration}
+carrying the relationship attributes \texttt{seed} and
+\texttt{final\_rank}, and the remaining 1:N relationships
+become foreign keys on the N-side.
 
 \begin{itemize}
   \item \texttt{player}(\underline{id}, name, birth\_year, current\_elo)
   \item \texttt{opening}(\underline{eco\_code}, name)
   \item \texttt{tournament}(\underline{id}, name, start\_date, num\_rounds, status)
   \item \texttt{registration}(\underline{\emph{player\_id}, \emph{tournament\_id}}, seed, final\_rank)
-  \item \texttt{round}(\underline{id}, \emph{tournament\_id}, round\_no, \\ \hspace*{1em}\textsc{unique}(tournament\_id, round\_no))
-  \item \texttt{game}(\underline{id}, \emph{round\_id}, \emph{white\_id}, \emph{black\_id}, \emph{eco\_code}, result, \\ \hspace*{1em}\textsc{check}(result IN (\texttt{'1-0'}, \texttt{'0-1'}, \texttt{'1/2-1/2'})), \\ \hspace*{1em}\textsc{check}(white\_id $\neq$ black\_id))
+  \item \texttt{round}(\underline{id}, \emph{tournament\_id}, round\_no),
+        \textsc{unique}(tournament\_id, round\_no)
+  \item \texttt{game}(\underline{id}, \emph{round\_id}, \emph{white\_id}, \emph{black\_id},
+        \emph{eco\_code}, result), \\
+        \hspace*{1em}\textsc{check}(result IN (\texttt{'1-0'}, \texttt{'0-1'}, \texttt{'1/2-1/2'})), \\
+        \hspace*{1em}\textsc{check}(white\_id $\neq$ black\_id)
   \item \texttt{rating\_history}(\underline{id}, \emph{player\_id}, valid\_from, elo)
 \end{itemize}
 
@@ -148,11 +158,13 @@ club data.
 \bottomrule
 \end{tabularx}
 
-The signature endpoint is \texttt{GET /tournaments/\{id\}/standings}: it JOINs
-\texttt{registration}, \texttt{game}, \texttt{round} and \texttt{player},
-groups by player and computes \texttt{SUM(points)} plus the Buchholz sum of the
-opponents' scores. All four \texttt{POST} endpoints require the
-\texttt{X-API-Key} header (dependency injection as in L~08).
+The signature endpoint is \texttt{GET /tournaments/\{id\}/standings}:
+it JOINs \texttt{registration} to \texttt{player} on
+\texttt{player\_id}, and \texttt{game} to \texttt{round} on
+\texttt{round\_id} (filtered by \texttt{round.tournament\_id}), then
+groups by player to compute \texttt{SUM(points)} plus the Buchholz
+sum of the opponents' scores. All four \texttt{POST} endpoints
+require the \texttt{X-API-Key} header.
 
 % ============================================================
 \section{Frontend prototype (hand sketches)}
